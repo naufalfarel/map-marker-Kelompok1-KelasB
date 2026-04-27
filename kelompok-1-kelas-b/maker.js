@@ -1,4 +1,4 @@
-const dataLokasiTim = [
+const lokasiMarker = [
   {
     nama: "rumah anggota kelompok 1",
     lat: 5.560591,

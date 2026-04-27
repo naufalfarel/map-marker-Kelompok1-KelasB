@@ -71,7 +71,7 @@
       }
 
       function tampilkanMarker() {
-        dataLokasiTim.forEach((lokasi, index) => {
+        lokasiMarker.forEach((lokasi, index) => {
           const warna = ambilWarna(lokasi.kategori);
 
           const marker = L.marker([lokasi.lat, lokasi.lng], {
@@ -147,7 +147,7 @@
         legend.onAdd = function () {
           const div = L.DomUtil.create("div", "legend");
           const kategoriUnik = [
-            ...new Set(dataLokasiTim.map((item) => item.kategori)),
+            ...new Set(lokasiMarker.map((item) => item.kategori)),
           ];
 
           div.innerHTML = `<div class="legend-title">Kategori</div>`;
@@ -158,7 +158,7 @@
           }
 
           kategoriUnik.forEach((kategori) => {
-            const jumlah = dataLokasiTim.filter(
+            const jumlah = lokasiMarker.filter(
               (item) => item.kategori === kategori,
             ).length;
 
