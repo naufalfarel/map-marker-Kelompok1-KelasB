@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Map Marker - Kelompok 1 Kelas B</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header id="header">
+      <div>
+        <h1>Map Marker Kelompok 1</h1>
+        <p>Kelas B - Proyek Kolaborasi Git</p>
+      </div>
+
+      <span id="total-marker">0 titik lokasi</span>
+    </header>
+
+    <aside id="lokasi-panel">
+      <div class="lokasi-title">Daftar Lokasi</div>
+      <div id="lokasi-buttons"></div>
+    </aside>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="maker.js"></script>
+
+    <script>
+      const peta = L.map("map").setView([5.55, 95.35], 12);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(peta);
+
+      const warnaKategori = {
+        Rumah: "#2563eb",
+        Kost: "#16a34a",
+        Kampus: "#9333ea",
+        Wisata: "#f97316",
+        Kuliner: "#dc2626",
+        Lainnya: "#64748b",
+      };
+
+      const semuaMarker = [];
+
+      function ambilWarna(kategori) {
+        return warnaKategori[kategori] || warnaKategori.Lainnya;
+      }
+
+      function buatPinMarker(warna) {
+        return L.divIcon({
+          className: "custom-pin",
+          html: `
+            <div class="pin-wrap" style="background:${warna}">
+              <div class="pin-dot"></div>
+            </div>
+          `,
+          iconSize: [26, 26],
+          iconAnchor: [13, 26],
+          popupAnchor: [0, -24],
+        });
+      }
+
+      function tampilkanMarker() {
+        dataLokasiTim.forEach((lokasi, index) => {
+          const warna = ambilWarna(lokasi.kategori);
+
+          const marker = L.marker([lokasi.lat, lokasi.lng], {
+            icon: buatPinMarker(warna),
+          }).addTo(peta);
+
+          marker.bindPopup(`
+            <div class="popup-box">
+              <strong>${lokasi.nama}</strong><br>
+              <span>Kategori: ${lokasi.kategori}</span><br>
+              <span>Kontributor: ${lokasi.anggota}</span><br>
+              <hr>
+              <p>${lokasi.catatan || "Tidak ada catatan."}</p>
+              <small>${lokasi.lat}, ${lokasi.lng}</small>
+            </div>
+          `);
+
+          semuaMarker.push({
+            ...lokasi,
+            marker,
+            nomor: index + 1,
+          });
+        });
+      }
+
+      function buatDaftarTombolLokasi() {
+        const boxTombol = document.getElementById("lokasi-buttons");
+        boxTombol.innerHTML = "";
+
+        if (semuaMarker.length === 0) {
+          boxTombol.innerHTML = `
+            <div class="lokasi-kosong">
+              Belum ada data marker.<br>
+              Tambahkan lokasi di file <b>maker.js</b>.
+            </div>
+          `;
+          return;
+        }
+
+        semuaMarker.forEach((lokasi) => {
+          const tombol = document.createElement("button");
+          tombol.className = "lokasi-btn";
+          tombol.type = "button";
+          tombol.innerHTML = `
+            <span>${lokasi.nomor}. ${lokasi.nama}</span>
+            <small>${lokasi.kategori} - ${lokasi.anggota}</small>
+          `;
+
+          tombol.addEventListener("click", () => {
+            peta.flyTo([lokasi.lat, lokasi.lng], 16, {
+              duration: 1.2,
+            });
+
+            setTimeout(() => {
+              lokasi.marker.openPopup();
+            }, 800);
+          });
+
+          boxTombol.appendChild(tombol);
+        });
+      }
+
+      function updateTotalLokasi() {
+        document.getElementById("total-marker").textContent =
+          `${semuaMarker.length} titik lokasi`;
+      }
+
+      function buatLegend() {
+        const legend = L.control({
+          position: "bottomright",
+        });
+
+        legend.onAdd = function () {
+          const div = L.DomUtil.create("div", "legend");
+          const kategoriUnik = [
+            ...new Set(dataLokasiTim.map((item) => item.kategori)),
+          ];
+
+          div.innerHTML = `<div class="legend-title">Kategori</div>`;
+
+          if (kategoriUnik.length === 0) {
+            div.innerHTML += `<div class="legend-empty">Belum ada marker</div>`;
+            return div;
+          }
+
+          kategoriUnik.forEach((kategori) => {
+            const jumlah = dataLokasiTim.filter(
+              (item) => item.kategori === kategori,
+            ).length;
+
+            div.innerHTML += `
+              <div class="legend-item">
+                <span class="legend-dot" style="background:${ambilWarna(
+                  kategori,
+                )}"></span>
+                ${kategori} (${jumlah})
+              </div>
+            `;
+          });
+
+          return div;
+        };
+
+        legend.addTo(peta);
+      }
+
+      tampilkanMarker();
+      buatDaftarTombolLokasi();
+      updateTotalLokasi();
+      buatLegend();
+    </script>
+  </body>
+</html>
