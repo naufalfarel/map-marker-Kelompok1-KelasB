@@ -17,4 +17,13 @@ const lokasiMarker = [
     catatan:
       "Masjid utama di lingkungan Universitas Syiah Kuala, digunakan untuk kegiatan ibadah mahasiswa.",
   },
+  {
+    nama: "Lampeneurut",
+    lat: 5.510986,
+    lng: 95.333744,
+    kategori: "Rumah",
+    anggota: "Azza",
+    catatan:
+      "Ini merupakan rumah pribadi.",
+  },
 ];
