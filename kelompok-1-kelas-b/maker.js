@@ -33,4 +33,12 @@ const lokasiMarker = [
     anggota: "Farel",
     catatan: "FMIPA Unsyiah",
   },
+  {
+    nama: "Lapangan Gelanggang USK",
+    lat: 5.571244,
+    lng: 95.366249,
+    kategori: "Olahraga",
+    anggota: "Farel",
+    catatan: "Lapangan Gelanggang USK (area olahraga dan kegiatan mahasiswa)",
+  },
 ];
