@@ -23,7 +23,14 @@ const lokasiMarker = [
     lng: 95.333744,
     kategori: "Rumah",
     anggota: "Azza",
-    catatan:
-      "Ini merupakan rumah pribadi.",
+    catatan: "Ini merupakan rumah pribadi.",
+  },
+  {
+    nama: "FMIPA Unsyiah",
+    lat: 5.569072,
+    lng: 95.368052,
+    kategori: "Kampus",
+    anggota: "Farel",
+    catatan: "FMIPA Unsyiah",
   },
 ];
