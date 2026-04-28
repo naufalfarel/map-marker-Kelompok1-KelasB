@@ -41,4 +41,12 @@ const lokasiMarker = [
     anggota: "Farel",
     catatan: "Lapangan Gelanggang USK (area olahraga dan kegiatan mahasiswa)",
   },
+  {
+    nama: "Rumah Sidqi",
+    lat: 5.574987137949113, 
+    lng: 95.33954130343504,
+    kategori: "Rumah",
+    anggota: "Sidqi",
+    catatan: "Tempat tinggal Sidqi",
+  },
 ];
